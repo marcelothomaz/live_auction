@@ -1,0 +1,58 @@
+{
+  "name": "live_auction",
+  "version": "1.0.0",
+  "description": "Live Auction System with Authentication",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js",
+    "start": "npx babel-node index.js"
+  },
+  "keywords": [
+    "bid",
+    "auction",
+    "ws",
+    "websockets"
+  ],
+  "author": "Marcelo Thomaz <marcelothomaz@live.com>",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "connect-redis": "^3.3.3",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "jsonwebtoken": "^8.1.0",
+    "mongoose": "^4.13.9",
+    "normalize.css": "^7.0.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^3.0.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-router": "^4.2.0",
+    "react-router-config": "^1.0.0-beta.4",
+    "react-router-dom": "^4.2.2",
+    "ws": "^4.0.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.2.5",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-react-css-modules": "^3.3.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "css-loader": "^0.28.9",
+    "ejs-loader": "^0.3.0",
+    "elliptic": "^6.4.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-include-assets-plugin": "^1.0.2",
+    "html-webpack-plugin": "^2.30.1",
+    "postcss-loader": "^2.0.10",
+    "style-loader": "^0.19.1",
+    "uglifyjs-webpack-plugin": "^1.1.6",
+    "webpack": "^3.10.0"
+  }
+}
