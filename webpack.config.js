@@ -6,7 +6,6 @@ const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 const autoprefixer = require('autoprefixer')
 const path = require('path');
 
@@ -25,14 +24,14 @@ module.exports = {
             ],
             exclude: /node_modules/,
             use: {
-               loader: "babel-loader",
-               options: {
-                  presets: ['env', 'react', 'stage-2']
-               }
+               loader: "babel-loader"
+               // options: {
+               //    presets: ['env', 'react', 'stage-2']
+               // }
             }
          },
          { 
-            test: /\.css$/,
+            test: /\.s?css$/,
             loader: ExtractTextPlugin.extract({
                fallback: 'style-loader',
                use: [
@@ -41,9 +40,15 @@ module.exports = {
                      options: {
                         modules: true,
                         localIdentName: '[local]__[hash:base64:5]',
-                        importLoaders: 1,
+                        importLoaders: 2,
                         sourceMap: true,
                         minimize: true
+                     }
+                  },
+                  { 
+                     loader: 'sass-loader',
+                     options: {
+                        sourceMap: true
                      }
                   },
                   {
@@ -68,7 +73,7 @@ module.exports = {
          sourceMap: true
       }),
       new ExtractTextPlugin({
-         filename: './css/style.[contenthash:5].css',
+         filename: './css/[name].[contenthash:5].css',
          allChunks: true,
          disable: false
       })

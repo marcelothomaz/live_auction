@@ -4,8 +4,6 @@ import { render } from 'react-dom'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { renderRoutes } from 'react-router-config'
 
-import styles from './css/main.css'
-
 import routes from './routes'
 
 const App = () => (
