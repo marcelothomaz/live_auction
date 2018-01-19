@@ -12,7 +12,7 @@ const path = require('path');
 module.exports = {
    entry:  path.join(__dirname, 'client', 'app.js'),
    output: {
-      path: path.join(__dirname, 'client', 'static'),
+      path: path.join(__dirname, 'client', 'static/'),
       filename: './js/bundle.js'
    },
    module: {
@@ -20,9 +20,9 @@ module.exports = {
          {
             test: /\.js$/,
             include: [
-               path.resolve(__dirname, "client")
+               path.resolve(__dirname, "client/")
             ],
-            exclude: /node_modules/,
+            exclude: [ /node_modules/ ],
             use: {
                loader: "babel-loader"
                // options: {
@@ -61,6 +61,17 @@ module.exports = {
                   }
                ]
             })        
+         },
+         {
+            test: /\.(woff|woff2|eot|ttf|otf)$/,
+            use: [
+               {
+                  loader: 'file-loader',
+                  options: {
+                     outputPath: path.join(__dirname,'client','static','fonts/')
+                  }
+               }
+            ]
          }
       ]
    },
