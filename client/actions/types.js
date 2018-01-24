@@ -1,0 +1,12 @@
+export const AUTH_USER = 'auth_user',
+   UNAUTH_USER = 'unauth_user',
+   AUTH_ERROR = 'auth_error',
+   USER_LOGGING_IN = 'user_logging_in',
+   FORGOT_PASSWORD_REQUEST = 'forgot_password_request',
+   RESET_PASSWORD_REQUEST = 'reset_password_request',
+   DATA_GET_OK = 'data_get_ok',
+   DATA_GET_ERROR = 'data_get_error',
+   DATA_GET_LOAD = 'data_get_load',
+   USER_REG_LOADING = 'user_reg_loading',
+   USER_REG = 'user_reg',
+   USER_REG_ERROR = 'user_reg_error'

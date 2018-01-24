@@ -1,6 +1,6 @@
 // webpack.config.js
 //
-const env = process.env.NODE_ENV;
+const PROD = process.env.NODE_ENV === 'production'
 
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
@@ -10,7 +10,8 @@ const autoprefixer = require('autoprefixer')
 const path = require('path');
 
 module.exports = {
-   entry:  path.join(__dirname, 'client', 'app.js'),
+   entry:  ['babel-polyfill', path.join(__dirname, 'client', 'app.js')],
+   devtool: "source-map",
    output: {
       path: path.join(__dirname, 'client', 'static/'),
       filename: './js/bundle.js'
@@ -42,7 +43,7 @@ module.exports = {
                         localIdentName: '[local]__[hash:base64:5]',
                         importLoaders: 2,
                         sourceMap: true,
-                        minimize: true
+                        minimize: PROD ? true : false
                      }
                   },
                   { 
@@ -75,13 +76,30 @@ module.exports = {
          }
       ]
    },
-   plugins: [
+   plugins: PROD ? [
+      new webpack.DefinePlugin({
+         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+      }),
       new HtmlWebpackPlugin({
          title: 'Live Auction',
          template: './resources/template.html',
       }),
       new UglifyJSPlugin({
-         sourceMap: true
+         sourceMap: true,
+         minify: PROD ? true : false
+      }),
+      new ExtractTextPlugin({
+         filename: './css/[name].[contenthash:5].css',
+         allChunks: true,
+         disable: false
+      })
+   ] :  [
+      new webpack.DefinePlugin({
+         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+      }),
+      new HtmlWebpackPlugin({
+         title: 'Live Auction',
+         template: './resources/template.html',
       }),
       new ExtractTextPlugin({
          filename: './css/[name].[contenthash:5].css',

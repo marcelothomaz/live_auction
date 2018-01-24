@@ -43,7 +43,7 @@ app.use(bodyParser.json());
 // Passport stuffs
 mongoose.connect(config.MONGODB, (err, db) => {
    if (err) {
-      console.error('Unalbe to connect to MongoDB. Error: ', err)
+      console.error('Unable to connect to MongoDB. Error: ', err)
    } else {
       console.log('Connected to MongoDB')
    }
@@ -101,28 +101,33 @@ httpsServer.listen(8443, err => {
 
 // Handle login
 app.post('/login', (req,res) => {
-   if (req.data) {
-      var data = JSON.parse(req.data)
-   } else {
-      console.error("POST /login - Incorrect data")
-   }
+   const { email, password } = req.body
 
-   const user = User.findOne({name: data.name}, (err, user) => {
+   if (!email || !password) {
+      res.status(400).send({ok:false, msg:'Please input username and password'})
+   } else {
+
+
+      const user = User.findOne({email}, (err, user) => {
          if (err) throw err;
 
          if (!user) {
-            res.staus(401).send({ok:false, msg: 'Authentication failed. Check username and password!'})
+            res.status(401).send({ok:false, msg: 'Authentication failed. Check username and password!'})
          } else {
-            user.comparePassword(req.body.password, function(err, isMatch) {
+            user.comparePassword(password, function(err, isMatch) {
                if (isMatch && !err) {
-                  let token = jwt.sign(user, config.JWT_SECRET)
-                  res.json({ok:true, token: 'JWT ' + token})
+                  let token = jwt.sign({
+                     id: user._id,
+                     exp: Math.floor(new Date().getTime()/1000) + 7*24*60*60
+                  }, config.JWT_SECRET)
+                  res.json({ok:true, token: 'JWT ' + token, name: user.name})
                } else {
                   res.status(401).send({ok:false, msg: 'Authentication failed. Check username and password!'})
                }
             })
          }
       })
+   }
 })
 
 app.post('/api/users',(req, res, next) => {
@@ -135,7 +140,7 @@ app.post('/api/users',(req, res, next) => {
       || !validator.isSize(password,8,16) 
       || !validator.hasNum(password)) 
    {
-      res.json({ok: false, message: 'Please check your input data!'})
+      res.status(400).json({ok: false, message: 'Please check your input data!'})
    } else {
       var user = new User({
          name, email, password 
@@ -144,10 +149,13 @@ app.post('/api/users',(req, res, next) => {
       user.save(err => {
          if (err) {
             console.error("Error creating user: " + err)
-            return res.json({ok: false, msg: 'Error creating user!'})
+            return res.status(400).json({ok: false, msg: 'Error creating user!'})
          }
          res.status(201).json({ok:true, msg: 'User created successfully!'})
       })
    }
 })
 
+app.all('/*', (req,res) => {
+   res.sendFile(path.join(__dirname,'./client/static/index.html'))
+})
